@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DroFire — Mini simulation</title>
+<style>
+:root{--navy:#101c35;--navy2:#172746;--bg:#f2f5fa;--text:#17243b;--muted:#68758b;--red:#e34b4b;--orange:#f29b38;--green:#1b9a70;--line:#e1e7f0;--blue:#315bd6}
+*{box-sizing:border-box}body{margin:0;font-family:Arial,Helvetica,sans-serif;background:var(--bg);color:var(--text)}
+header{background:linear-gradient(120deg,var(--navy),#263e68);color:white;padding:24px 6%;display:flex;justify-content:space-between;align-items:center;gap:15px;flex-wrap:wrap}
+.brand{font-size:25px;font-weight:800;letter-spacing:1px}.brand span{color:#ff9b55}.subtitle{font-size:13px;color:#cbd6e8;margin-top:5px}.badge{border:1px solid #91a7c9;border-radius:30px;padding:8px 13px;font-size:11px;letter-spacing:1px;color:#e7efff}
+main{max-width:1120px;margin:28px auto;padding:0 18px}.intro{margin-bottom:20px}.intro h1{font-size:25px;margin:0 0 7px}.intro p{margin:0;color:var(--muted);line-height:1.5}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;align-items:start}.card{background:white;border:1px solid var(--line);border-radius:17px;box-shadow:0 8px 25px #12264a0b;overflow:hidden}.cardhead{padding:17px 20px;border-bottom:1px solid var(--line);display:flex;align-items:center;gap:11px}.icon{width:37px;height:37px;border-radius:11px;display:grid;place-items:center;background:#edf2ff;font-size:19px}.cardhead h2{font-size:16px;margin:0}.cardhead small{display:block;color:var(--muted);font-size:11px;margin-top:4px}.content{padding:20px}.label{font-size:12px;font-weight:700;display:block;margin:0 0 7px}.field{margin-bottom:15px}input,select{width:100%;border:1px solid #d5ddea;border-radius:9px;padding:12px;font-size:14px;color:var(--text);background:#fff}input:focus,select:focus{outline:2px solid #b9c9ff;border-color:var(--blue)}.checks{display:flex;gap:8px;flex-wrap:wrap}.check{border:1px solid var(--line);border-radius:9px;padding:9px 11px;font-size:12px;color:#46536a;background:#fafbfd}.check input{width:auto;margin:0 5px 0 0;vertical-align:middle}
+button{border:0;border-radius:10px;padding:12px 16px;font-size:13px;font-weight:700;cursor:pointer}.send{width:100%;background:var(--red);color:white;margin-top:3px;box-shadow:0 5px 12px #e34b4b30}.send:hover{background:#cf3838}.reset{background:#edf1f7;color:#42516a;margin-top:10px;width:100%}
+.wait{border:1px dashed #ccd6e5;background:#f9fbfe;border-radius:12px;padding:26px 15px;text-align:center;color:var(--muted);font-size:13px;line-height:1.6}.wait .big{font-size:30px;margin-bottom:8px}.alert{border:1px solid #f2c9c9;border-radius:13px;overflow:hidden;display:none}.alerttop{background:#fff1f0;padding:14px 16px;display:flex;justify-content:space-between;align-items:center;gap:10px}.urgent{font-size:11px;font-weight:800;letter-spacing:.7px;color:#bd3030}.live{font-size:10px;background:#dff6ec;color:#14734f;padding:6px 9px;border-radius:20px;font-weight:800}.alertbody{padding:16px}.alertbody h3{font-size:19px;margin:0 0 5px}.muted{color:var(--muted);font-size:12px}.details{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:16px 0}.detail{background:#f6f8fb;padding:11px;border-radius:9px}.detail span{display:block;color:var(--muted);font-size:10px;margin-bottom:5px}.detail strong{font-size:13px}.observations{font-size:12px;line-height:1.6;background:#fff8ec;border:1px solid #f3dfbd;border-radius:9px;padding:11px}.timeline{margin-top:17px;border-left:2px solid #dbe3f0;padding-left:13px}.event{font-size:11px;color:#506078;margin:8px 0}.event b{color:var(--green)}.success{margin-top:14px;padding:11px;border-radius:9px;background:#eaf8f1;color:#17744f;font-size:12px;font-weight:700;display:none}.foot{text-align:center;color:#8490a3;font-size:11px;padding:22px}
+@media(max-width:760px){.grid{grid-template-columns:1fr}header{padding:20px}.details{grid-template-columns:1fr 1fr}}
+</style>
+</head>
+<body>
+<header><div><div class="brand">DRO<span>FIRE</span></div><div class="subtitle">Transmission d'alerte au centre de coordination</div></div><div class="badge">MODE DÉMONSTRATION · DONNÉES FICTIVES</div></header>
+<main>
+<div class="intro"><h1>Simulation d'une alerte incendie</h1><p>Choisis un bâtiment et les observations du drone, puis envoie le rapport. Tu verras immédiatement ce qui apparaît du côté du centre de coordination.</p></div>
+<div class="grid">
+<section class="card">
+<div class="cardhead"><div class="icon">🚁</div><div><h2>1. Simulation du drone</h2><small>Préparation du rapport d'incident</small></div></div>
+<div class="content">
+<div class="field"><label class="label" for="site">Établissement</label><input id="site" value="Usine Nord"></div>
+<div class="field"><label class="label" for="building">Bâtiment concerné</label><select id="building"><option>Atelier de production — Bâtiment A</option><option>Zone de stockage — Bâtiment B</option><option>Local technique — Bâtiment C</option><option>Entrepôt principal — Bâtiment D</option></select></div>
+<div class="field"><label class="label" for="gps">Localisation GPS</label><input id="gps" value="36.8065, 10.1815"></div>
+<div class="field"><label class="label">Observations simulées du drone</label><div class="checks"><label class="check"><input type="checkbox" id="smoke" checked> Fumée observée</label><label class="check"><input type="checkbox" id="thermal" checked> Anomalie thermique</label></div></div>
+<div class="field"><label class="label" for="flameStatus">Observation des flammes</label><select id="flameStatus"><option value="Flammes visibles">Flammes visibles</option><option value="Aucune flamme visible" selected>Aucune flamme visible</option><option value="Visibilité insuffisante">Visibilité insuffisante / impossible à déterminer</option></select></div>
+<div class="field"><label class="label" for="gasType">Type de gaz détecté</label><select id="gasType"><option value="Aucun gaz signalé">Aucun gaz signalé</option><option value="Monoxyde de carbone (CO)">Monoxyde de carbone (CO)</option><option value="Dioxyde de carbone (CO₂)">Dioxyde de carbone (CO₂)</option><option value="Méthane (CH₄)">Méthane (CH₄)</option><option value="Sulfure d'hydrogène (H₂S)">Sulfure d'hydrogène (H₂S)</option><option value="Propane / butane (GPL)">Propane / butane (GPL)</option><option value="Gaz détecté — type non identifié">Gaz détecté — type non identifié</option></select><small class="muted">Sélection fictive pour la démonstration ; en réel, le gaz doit être identifié par un capteur adapté.</small></div>
+<div class="field"><label class="label" for="temperature">Température mesurée (°C)</label><input id="temperature" type="number" min="-50" max="1000" step="0.1" value="78.5" placeholder="Ex. : 78.5"></div>
+<div class="field"><label class="label" for="priority">Niveau de priorité</label><select id="priority"><option value="Élevée">Élevée</option><option value="Critique">Critique</option><option value="À vérifier">À vérifier</option></select></div>
+<button class="send" onclick="sendAlert()">➤ Envoyer le rapport au centre</button><button class="reset" onclick="resetDemo()">Réinitialiser la simulation</button>
+</div></section>
+<section class="card">
+<div class="cardhead"><div class="icon">🖥️</div><div><h2>2. Centre de coordination</h2><small>Vue de réception de l'alerte</small></div></div>
+<div class="content">
+<div id="waiting" class="wait"><div class="big">📡</div><strong>En attente d'un rapport</strong><br>Le centre de coordination affichera ici les informations dès que tu enverras une alerte depuis le simulateur.</div>
+<div id="received" class="alert">
+<div class="alerttop"><span class="urgent">● NOUVELLE ALERTE INCENDIE</span><span class="live">REÇUE</span></div>
+<div class="alertbody"><h3 id="outBuilding">Bâtiment concerné</h3><div class="muted" id="outSite">Établissement</div>
+<div class="details"><div class="detail"><span>IDENTIFIANT</span><strong id="outId">DF-0001</strong></div><div class="detail"><span>HEURE DE RÉCEPTION</span><strong id="outTime">--:--:--</strong></div><div class="detail"><span>LOCALISATION GPS</span><strong id="outGps">--</strong></div><div class="detail"><span>PRIORITÉ</span><strong id="outPriority">Élevée</strong></div><div class="detail"><span>GAZ DÉTECTÉ</span><strong id="outGas">Aucun gaz signalé</strong></div><div class="detail"><span>TEMPÉRATURE MESURÉE</span><strong id="outTemperature">78,5 °C</strong></div><div class="detail"><span>OBSERVATION DES FLAMMES</span><strong id="outFlameStatus">Aucune flamme visible</strong></div></div>
+<div class="observations"><b>Autres observations transmises par le drone</b><div id="outObservations">--</div></div>
+<div class="timeline"><div class="event"><b>✓ Rapport reçu</b> — données disponibles au centre de coordination.</div><div class="event"><b>✓ Source identifiée</b> — drone DroFire.</div></div>
+<div class="success" id="success">✓ Le rapport simulé est maintenant affiché au centre de coordination.</div>
+</div></div>
+</div></section>
+</div>
+<div class="foot">Prototype local de démonstration — aucune donnée réelle n'est envoyée à la Protection Civile.</div>
+</main>
+<script>
+let count=0;
+function sendAlert(){
+ const site=document.getElementById('site').value.trim()||'Établissement non renseigné';
+ const building=document.getElementById('building').value;
+ const gps=document.getElementById('gps').value.trim()||'Non renseigné';
+ const priority=document.getElementById('priority').value;
+ const gasType=document.getElementById('gasType').value;
+ const flameStatus=document.getElementById('flameStatus').value;
+ const temperature=document.getElementById('temperature').value;
+ const obs=[];
+ if(document.getElementById('smoke').checked)obs.push('Fumée observée');
+ if(document.getElementById('thermal').checked)obs.push('Anomalie thermique signalée');
+ if(!obs.length)obs.push('Aucune autre observation sélectionnée — vérification nécessaire');
+ count++;
+ const now=new Date();
+ document.getElementById('outBuilding').textContent=building;
+ document.getElementById('outSite').textContent='Établissement : '+site;
+ document.getElementById('outId').textContent='DF-'+String(count).padStart(4,'0');
+ document.getElementById('outTime').textContent=now.toLocaleTimeString('fr-FR');
+ document.getElementById('outGps').textContent=gps;
+ document.getElementById('outPriority').textContent=priority;
+ document.getElementById('outGas').textContent=gasType;
+ document.getElementById('outTemperature').textContent=temperature!==''?Number(temperature).toLocaleString('fr-FR')+' °C':'Non renseignée';
+ document.getElementById('outFlameStatus').textContent=flameStatus;
+ document.getElementById('outObservations').textContent=obs.join(' · ');
+ document.getElementById('waiting').style.display='none';
+ document.getElementById('received').style.display='block';
+ document.getElementById('success').style.display='block';
+}
+function resetDemo(){
+ document.getElementById('waiting').style.display='block';
+ document.getElementById('received').style.display='none';
+ document.getElementById('success').style.display='none';
+}
+</script>
+</body>
+</html>
